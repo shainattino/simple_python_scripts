@@ -9,10 +9,9 @@ import os
 #for ECN count
 #phase should be count too
 def count(df_modelname,df_file,col_name):
-    counts = df_file["??"].value_counts()
-    df_modelname[col_name] = df_modelname["modelname"].map(counts).fillna(0).astype(int)
+    df_modelname[col_name]=df_modelname["shorten_modelname"].apply(
+        lambda name: df_file["modelname"].str.contains(f"^{str(name)}",regex=True, na=False).sum())
     return df_modelname
-
 def main():
     if len(sys.argv)<3:
         print("Usage: python script.py <modelname_path> <file_dir>")
